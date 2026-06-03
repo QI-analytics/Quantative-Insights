@@ -1,0 +1,47 @@
+// ============================================
+//   QUANTITATIVE INSIGHTS — script.js
+// ============================================
+
+// Page navigation
+function showPage(id) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+  });
+
+  // Remove active state from all nav buttons
+  document.querySelectorAll('.nav-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+
+  // Show the selected page
+  document.getElementById('page-' + id).classList.add('active');
+
+  // Highlight the correct nav button
+  var order = ['home', 'contact', 'teachings', 'about', 'team'];
+  document.querySelectorAll('.nav-btn')[order.indexOf(id)].classList.add('active');
+
+  // Scroll to top
+  window.scrollTo(0, 0);
+}
+
+// Contact form submission
+function submitForm() {
+  var first   = document.getElementById('f-first').value.trim();
+  var email   = document.getElementById('f-email').value.trim();
+  var message = document.getElementById('f-message').value.trim();
+
+  if (!first || !email || !message) {
+    alert('Please fill in at least your first name, email, and message.');
+    return;
+  }
+
+  // Show success message
+  document.getElementById('form-success').style.display = 'block';
+
+  // Clear the form
+  ['f-first', 'f-last', 'f-email', 'f-org', 'f-message'].forEach(function(id) {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-subject').selectedIndex = 0;
+}
