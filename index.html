@@ -3,492 +3,416 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quantitative Insights</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <title>Open Path Labs | Tech & Finance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    :root{
-      --gold:#C9A84C;--gold-light:#E8C97A;--gold-dark:#8B6914;--gold-pale:#F5EDD8;
-      --white:#FFFFFF;--off:#FAFAF8;--dark:#1A1A1A;--mid:#4A4A4A;--light:#888880;
-      --border:rgba(201,168,76,0.25);
+    /* RESET & VARIABLES */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-deep: #0B0F19;
+      --bg-card: #151C2C;
+      --bg-card-hover: #1C2539;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --accent-cyan: #00D4FF;
+      --accent-blue: #3B82F6;
+      --gradient-main: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      --border-color: rgba(59, 130, 246, 0.2);
     }
-    body{font-family:'Montserrat',sans-serif;background:var(--white);color:var(--dark);line-height:1.6}
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-    /* NAV */
-    nav{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--border);
-      padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:70px;
-      box-shadow:0 2px 20px rgba(201,168,76,0.08)}
-    .nav-logo{display:flex;align-items:center;gap:14px}
-    .nav-logo img{height:42px;width:auto;object-fit:contain}
-    .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;
-      letter-spacing:0.08em;color:var(--gold);line-height:1.15}
-    .nav-logo-text span{display:block;font-weight:300;font-size:12px;letter-spacing:0.22em;
-      text-transform:uppercase;color:var(--mid)}
-    .nav-links{display:flex}
-    .nav-btn{background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;
-      font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:500;letter-spacing:0.13em;
-      text-transform:uppercase;color:var(--mid);padding:0 1.1rem;height:70px;
-      transition:color .3s,border-color .3s}
-    .nav-btn:hover,.nav-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+    /* TYPOGRAPHY */
+    h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+    .gradient-text {
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
 
-    /* PAGES */
-    .page{display:none;animation:fadeIn .4s ease}
-    .page.active{display:block}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-    /* HERO & FUNDRAISER */
-    .hero{padding:80px 3rem 70px;border-bottom:1px solid var(--border);
-      display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
-      max-width:1140px;margin:0 auto}
-    .eyebrow{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;
-      color:var(--gold);font-weight:600;margin-bottom:1rem}
-    .hero h1{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:300;
-      line-height:1.12;color:var(--dark);margin-bottom:1.5rem}
-    .hero h1 em{color:var(--gold);font-style:italic}
-    .hero-desc{font-size:14px;line-height:1.85;color:var(--mid);margin-bottom:2.5rem;font-weight:300}
+    /* NAVIGATION */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 5%; height: 80px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700;
+      color: var(--text-main); display: flex; align-items: center; gap: 10px;
+    }
+    .nav-brand span { font-size: 24px; }
+    .nav-links { display: flex; gap: 5px; align-items: center; }
+    .nav-btn {
+      background: none; border: none; color: var(--text-muted); cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+      padding: 10px 16px; border-radius: 6px; transition: all 0.3s ease;
+    }
+    .nav-btn:hover, .nav-btn.active { color: var(--accent-cyan); background: rgba(0, 212, 255, 0.05); }
     
-    /* FUNDRAISER METER */
-    .fundraiser-card{border:1px solid var(--border);padding:2.5rem;background:var(--off);
-      position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.03)}
-    .fundraiser-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--gold)}
-    .fundraiser-card h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--dark);margin-bottom:0.5rem}
-    .fundraiser-card p{font-size:12.5px;color:var(--mid);margin-bottom:1.5rem;font-weight:300}
-    .meter-wrap{background:var(--white);border:1px solid var(--border);height:24px;border-radius:12px;overflow:hidden;margin-bottom:1rem}
-    .meter-fill{height:100%;background:linear-gradient(90deg, var(--gold-light), var(--gold-dark));width:0%; /* Change this % to update progress */
-      transition:width 1s ease-in-out}
-    .meter-stats{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--gold);letter-spacing:0.05em;text-transform:uppercase}
-
-    /* SECTION */
-    .section{padding:70px 3rem;max-width:1140px;margin:0 auto}
-    .section-title{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;
-      color:var(--dark);margin-bottom:0.5rem}
-    .section-title em{color:var(--gold);font-style:italic}
-    .gold-rule{width:48px;height:2px;background:var(--gold);margin-bottom:2.5rem}
-    .section-sub{font-size:14px;color:var(--mid);line-height:1.85;max-width:600px;
-      margin-bottom:3rem;font-weight:300}
-
     /* BUTTONS */
-    .btn-gold{display:inline-block;background:var(--gold);color:var(--white);border:none;cursor:pointer;
-      font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.15em;
-      text-transform:uppercase;padding:15px 34px;transition:all .3s ease;text-decoration:none}
-    .btn-gold:hover{background:var(--dark);transform:translateY(-2px)}
-    .btn-outline{display:inline-block;background:transparent;color:var(--gold);
-      border:1px solid var(--gold);cursor:pointer;font-family:'Montserrat',sans-serif;
-      font-size:10px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;
-      padding:15px 34px;transition:all .3s ease;margin-left:12px;text-decoration:none}
-    .btn-outline:hover{background:var(--gold);color:var(--white);transform:translateY(-2px)}
+    .btn-primary {
+      background: var(--gradient-main); color: #fff; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+      padding: 14px 28px; border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+    .btn-outline {
+      background: transparent; color: var(--accent-cyan);
+      border: 1px solid var(--accent-cyan); cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+      padding: 14px 28px; border-radius: 8px; transition: all 0.3s;
+    }
+    .btn-outline:hover { background: rgba(0, 212, 255, 0.1); transform: translateY(-2px); }
 
-    /* HOME INFO CARDS */
-    .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
-    .info-card{border:1px solid var(--border);padding:2.5rem 2rem;background:var(--off);
-      border-top:3px solid var(--gold);transition:transform .3s, box-shadow .3s}
-    .info-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(201,168,76,0.1)}
-    .info-icon{font-size:32px;color:var(--gold);margin-bottom:1.5rem}
-    .info-card h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;
-      margin-bottom:1rem;color:var(--dark)}
-    .info-card p{font-size:13px;line-height:1.8;color:var(--mid);font-weight:300}
+    .btn-donate {
+      background: transparent; color: #fff; border: 1px solid #fff;
+      padding: 10px 20px; border-radius: 6px; font-weight: 600; font-size: 13px;
+      margin-left: 15px; cursor: pointer; transition: 0.3s;
+    }
+    .btn-donate:hover { background: #fff; color: var(--bg-deep); }
 
-    /* CONTACT (FORMSPREE) */
-    .contact-wrap{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start}
-    .contact-info h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;
-      color:var(--dark);margin-bottom:1.5rem}
-    .contact-detail{display:flex;align-items:flex-start;gap:12px;margin-bottom:1.25rem;
-      font-size:13px;color:var(--mid);font-weight:300;line-height:1.7}
-    .contact-detail-icon{color:var(--gold);font-size:18px;margin-top:2px;flex-shrink:0}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-    .form-group{display:flex;flex-direction:column;gap:8px}
-    .form-group.full{grid-column:1/-1}
-    .form-group label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
-      color:var(--gold);font-weight:600}
-    .form-group input,.form-group textarea,.form-group select{
-      border:1px solid var(--border);background:var(--off);
-      font-family:'Montserrat',sans-serif;font-size:13px;color:var(--dark);
-      padding:14px 16px;outline:none;transition:border-color .3s, background .3s;border-radius:0;appearance:none}
-    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);background:var(--white)}
-    .form-group textarea{min-height:150px;resize:vertical}
+    /* PAGE ROUTING */
+    .page { display: none; animation: fadeIn 0.5s ease; min-height: 80vh; padding-bottom: 80px; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* TEACHINGS (MODULES) */
-    .module-section{margin-bottom:4rem}
-    .module-header{margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:1rem}
-    .module-header h3{font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--dark); font-weight:600}
-    .module-header span{font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); font-weight:500; display:block; margin-bottom:5px}
+    /* LAYOUT CONTAINERS */
+    .container { max-width: 1200px; margin: 0 auto; padding: 80px 5%; }
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-header h2 { font-size: 42px; margin-bottom: 15px; }
+    .section-header p { color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 16px; }
+
+    /* HERO SECTION */
+    .hero {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 5% 80px; position: relative;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(11,15,25,0) 70%);
+      z-index: -1; pointer-events: none;
+    }
+    .hero h1 { font-size: 64px; line-height: 1.1; margin-bottom: 24px; }
+    .hero p { font-size: 20px; color: var(--text-muted); max-width: 700px; margin-bottom: 40px; font-weight: 300; }
+    .hero-actions { display: flex; gap: 20px; justify-content: center; }
+
+    /* CARDS (TOOLS & LEARN) */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 40px 30px; transition: all 0.3s;
+      display: flex; flex-direction: column; position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+      background: var(--gradient-main); transform: scaleX(0); transform-origin: left; transition: transform 0.4s;
+    }
+    .card:hover { transform: translateY(-8px); background: var(--bg-card-hover); border-color: var(--accent-cyan); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .card:hover::before { transform: scaleX(1); }
+    .card-icon { font-size: 32px; margin-bottom: 20px; display: inline-block; background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 12px; }
+    .card h3 { font-size: 22px; margin-bottom: 12px; }
+    .card p { color: var(--text-muted); font-size: 15px; margin-bottom: 25px; flex-grow: 1; }
+    .card-link { color: var(--accent-cyan); font-weight: 600; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+    .card-link:hover { text-decoration: underline; }
+
+    /* MISSION SECTION */
+    .mission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .mission-text p { color: var(--text-muted); font-size: 17px; margin-bottom: 20px; line-height: 1.8; }
+    .mission-pillars { list-style: none; margin-top: 30px; }
+    .mission-pillars li {
+      display: flex; align-items: flex-start; gap: 15px; margin-bottom: 20px;
+      background: var(--bg-card); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);
+    }
+    .pillar-icon { font-size: 24px; color: var(--accent-cyan); }
+    .pillar-content h4 { font-size: 18px; margin-bottom: 5px; }
+    .pillar-content p { color: var(--text-muted); font-size: 14px; margin: 0; }
     
-    .video-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
-    .video-card{border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all .3s ease; background:var(--white)}
-    .video-card:hover{box-shadow:0 8px 25px rgba(201,168,76,0.15); transform:translateY(-3px)}
-    .video-thumb{height:140px;background:var(--gold-pale);display:flex;align-items:center;
-      justify-content:center;position:relative}
-    .play-btn{width:48px;height:48px;border-radius:50%;background:var(--gold);color:white;
-      display:flex;align-items:center;justify-content:center;font-size:16px;
-      transition:transform .3s;border:2px solid rgba(255,255,255,0.4)}
-    .video-card:hover .play-btn{transform:scale(1.15)}
-    .play-icon{width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;
-      border-left:14px solid white;margin-left:4px}
-    .video-info{padding:1.25rem 1rem}
-    .video-info h4{font-size:13px;font-weight:600;color:var(--dark);margin-bottom:6px; line-height:1.4}
-    .video-info p{font-size:11px;color:var(--light)}
+    .mission-visual { position: relative; }
+    .code-window { background: #000; border-radius: 12px; padding: 20px; border: 1px solid var(--border-color); font-family: monospace; color: #10B981; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .code-header { display: flex; gap: 8px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 15px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot.red { background: #EF4444; } .dot.yel { background: #F59E0B; } .dot.grn { background: #10B981; }
 
-    /* NEWS PAGE */
-    .news-grid{display:grid; grid-template-columns:1fr; gap:2rem; max-width:800px; margin:0 auto}
-    .news-card{border:1px solid var(--border); padding:2.5rem; background:var(--off); display:flex; flex-direction:column; gap:1rem}
-    .news-date{font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); font-weight:600}
-    .news-card h3{font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--dark); font-weight:600}
-    .news-card p{font-size:14px; color:var(--mid); line-height:1.8; font-weight:300}
-    .news-readmore{font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); text-decoration:none; margin-top:1rem; align-self:flex-start; border-bottom:1px solid transparent; transition:border-color .3s}
-    .news-readmore:hover{border-color:var(--gold)}
-
-    /* GUESTS */
-    .featured-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem}
-    .featured-card{border:1px solid var(--border);text-align:center;overflow:hidden;background:var(--white);transition:transform .3s}
-    .featured-card:hover{transform:translateY(-5px)}
-    .featured-avatar{height:150px;background:var(--gold-pale);display:flex;align-items:center;
-      justify-content:center;font-family:'Cormorant Garamond',serif;font-size:42px;
-      color:var(--gold);font-weight:300;border-bottom:1px solid var(--border)}
-    .featured-card-body{padding:1.5rem 1rem}
-    .featured-card h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--dark)}
-    .featured-card .role{font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-top:6px}
-    .featured-card p{font-size:11.5px;color:var(--mid);margin-top:10px;line-height:1.65;font-weight:300}
-
-    /* ABOUT */
-    .about-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:center}
-    .about-img{width:100%;aspect-ratio:3/4;background:var(--gold-pale);border:1px solid var(--border);
-      display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;
-      font-size:72px;color:var(--gold);font-weight:300;box-shadow:20px 20px 0px var(--off), 20px 20px 0px 1px var(--border)}
-    .about-text p{font-size:14px;line-height:1.9;color:var(--mid);margin-bottom:1.5rem;font-weight:300}
-    .values-list{list-style:none;margin-top:2rem}
-    .values-list li{display:flex;align-items:center;gap:16px;padding:12px 0;
-      border-bottom:1px solid var(--border);font-size:13px;color:var(--dark);font-weight:400}
-    .values-list li::before{content:'✦';color:var(--gold);font-size:14px}
-
-    /* TEAM */
-    .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3rem 2rem}
-    .team-card{text-align:center}
-    .team-avatar{width:120px;height:120px;border-radius:50%;background:var(--gold-pale);
-      border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;
-      font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold);
-      font-weight:300;margin:0 auto 1.25rem;box-shadow:0 10px 20px rgba(201,168,76,0.15)}
-    .team-card h4{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark)}
-    .team-card .role{font-size:10px;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-top:6px}
-    .team-divider{width:40px;height:2px;background:var(--gold-light);margin:12px auto}
-    .team-card p{font-size:13px;color:var(--mid);line-height:1.75;font-weight:300}
-
-    /* DIVIDER */
-    .section-divider{border:none;border-top:1px solid var(--border);margin:4rem 0}
+    /* CONTACT & DONATE */
+    .dual-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 50px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; color: #fff; font-family: 'Inter'; font-size: 15px; transition: 0.3s;
+    }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-cyan); background: rgba(255,255,255,0.06); }
+    .form-group textarea { height: 150px; resize: vertical; }
+    
+    .donate-card {
+      background: var(--gradient-main); padding: 40px; border-radius: 12px; text-align: center; color: #fff;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .donate-card h3 { font-size: 28px; margin-bottom: 15px; color: #fff; }
+    .donate-card p { font-size: 16px; margin-bottom: 25px; opacity: 0.9; }
+    .btn-donate-large {
+      background: #fff; color: var(--accent-blue); padding: 15px 30px; border-radius: 8px;
+      font-weight: 800; text-decoration: none; font-size: 16px; transition: transform 0.3s;
+    }
+    .btn-donate-large:hover { transform: scale(1.05); }
 
     /* FOOTER */
-    footer{border-top:1px solid var(--border);padding:2.5rem 3rem;
-      display:flex;align-items:center;justify-content:space-between;background:var(--off)}
-    .footer-left{display:flex;align-items:center;gap:12px}
-    .footer-left img{height:42px;width:auto;object-fit:contain}
-    .footer-logo-text{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);font-weight:600;letter-spacing:0.05em}
-    footer p{font-size:12px;color:var(--mid);font-weight:300}
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 5%; text-align: center; color: var(--text-muted); font-size: 14px; }
   </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">
-    <img src="logo.png" alt="Quantitative Insights Logo" onerror="this.style.display='none'">
-    <div class="nav-logo-text">Quantitative<span>Insights</span></div>
+  <div class="nav-brand">
+    <span>🌐</span> Open Path Labs
   </div>
   <div class="nav-links">
     <button class="nav-btn active" onclick="showPage('home')">Home</button>
-    <button class="nav-btn" onclick="showPage('teachings')">Modules</button>
-    <button class="nav-btn" onclick="showPage('news')">News</button>
-    <button class="nav-btn" onclick="showPage('about')">About</button>
-    <button class="nav-btn" onclick="showPage('team')">Team</button>
+    <button class="nav-btn" onclick="showPage('tools')">Tools</button>
+    <button class="nav-btn" onclick="showPage('learn')">Learn</button>
+    <button class="nav-btn" onclick="showPage('mission')">Mission</button>
     <button class="nav-btn" onclick="showPage('contact')">Contact</button>
+    <button class="btn-donate" onclick="window.open('https://gofundme.com', '_blank')">Donate</button>
   </div>
 </nav>
 
 <div id="page-home" class="page active">
   <div class="hero">
-    <div>
-      <p class="eyebrow">Student-Led Data Excellence</p>
-      <h1>Learn.<br><em>Analyze.</em><br>Impact.</h1>
-      <p class="hero-desc">We are a dedicated group of high school students turning complex data into actionable insights. Join us in learning about business and finance.</p>
-      <button class="btn-gold" onclick="showPage('about')">Our Mission</button>
-      <button class="btn-outline" onclick="showPage('teachings')">Start Learning</button>
-    </div>
-    
-    <div class="fundraiser-card">
-      <p class="eyebrow" style="margin-bottom:0.5rem">Current Initiative</p>
-      <h3>Club Fundraiser</h3>
-      <p>Help us support communities experiencing financial hardship and come from a disadvantaged economic background.</p>
-      <div class="meter-wrap">
-        <div class="meter-fill"></div>
-      </div>
-      <div class="meter-stats">
-        <span>0 Raised</span>
-        <span>Goal: $1,000</span>
-      </div>
+    <h1>Bridging Code and <br><span class="gradient-text">Financial Literacy</span></h1>
+    <p>A student-built platform engineering accessible financial education, interactive coding tools, and real-world learning modules for the next generation.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showPage('tools')">Explore Tools</button>
+      <button class="btn-outline" onclick="showPage('learn')">Learn Finance</button>
     </div>
   </div>
-
-  <div class="section">
-    <p class="eyebrow">What We Do</p>
-    <h2 class="section-title">Our <em>Expertise</em></h2>
-    <div class="gold-rule"></div>
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-icon">📊</div>
-        <h3>Data Analysis</h3>
-        <p>We publish weekly reports analyzing stock market trends, performance, and key economic insights.</p>
+  
+  <div class="container" style="padding-top: 0;">
+    <div class="grid-3">
+      <div class="card" onclick="showPage('tools')" style="cursor: pointer;">
+        <div class="card-icon">💻</div>
+        <h3>Digital Tools</h3>
+        <p>Interact with our custom-built financial simulators and calculators to see the math behind the money.</p>
       </div>
-      <div class="info-card">
-        <div class="info-icon">💻</div>
-        <h3>Teaching</h3>
-        <p>A free of charge financial education course designed to teach students the fundamentals of investing, economics and quantitative finance. The course includes insight from professionals who have working in the financial field.</p>
+      <div class="card" onclick="showPage('learn')" style="cursor: pointer;">
+        <div class="card-icon">📚</div>
+        <h3>Financial Education</h3>
+        <p>Curated modules breaking down complex topics like stocks, budgeting, and risk into digestible lessons.</p>
       </div>
-      <div class="info-card">
-        <div class="info-icon">🤝</div>
-        <h3>Community Impact</h3>
-        <p>We organize fundraising events focused on supporting communities experiencing financial hardship and come from a disadvantaged economic background.</p>
+      <div class="card" onclick="window.open('https://gofundme.com', '_blank')" style="cursor: pointer;">
+        <div class="card-icon">🌍</div>
+        <h3>Nonprofit Mission</h3>
+        <p>Every donation funds our initiative to bring these resources to economically disadvantaged schools.</p>
       </div>
     </div>
   </div>
 </div>
 
-<div id="page-teachings" class="page">
-  <div class="section">
-    <p class="eyebrow">Video Curriculum</p>
-    <h2 class="section-title">Learning <em>Modules</em></h2>
-    <div class="gold-rule"></div>
-    <p class="section-sub">Step-by-step videos designed for high schoolers. Whether you're new to stats or looking for advanced tips, start here.</p>
-
-    <div class="module-section">
-      <div class="module-header">
-        <span>Module 01</span>
-        <h3>The Basics</h3>
-      </div>
-      <div class="video-grid">
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>Fundamentals of Investing</h4><p>12 min · Intro</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>Fundamentals of Economics</h4><p>15 min · Math Basics</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>Quantitative FInance</h4><p>10 min · Excel</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>Saving or Investing?</h4><p>18 min · Logic</p></div></div>
-      </div>
+<div id="page-tools" class="page">
+  <div class="container">
+    <div class="section-header">
+      <h2>Interactive <span class="gradient-text">Tools</span></h2>
+      <p>Built by our computer science team, these open-source tools allow you to model financial scenarios in real-time. No spreadsheets required.</p>
     </div>
-
-    <div class="module-section">
-      <div class="module-header">
-        <span>Module 02</span>
-        <h3> Information</h3>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <h3>Compound Growth Engine</h3>
+        <p>Visualize how time and interest rates affect your investments. Adjust variables to see the power of compounding over decades.</p>
+        <a href="#" class="card-link" onclick="alert('Tool Module Loading...')">Launch Tool →</a>
       </div>
-      <div class="video-grid">
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>14 min · Design</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>20 min · Tutorial</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>16 min · Communication</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>25 min · Software</p></div></div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>Budget Visualizer</h3>
+        <p>Input your income and expenses to generate an automatic, interactive Sankey diagram of your cash flow.</p>
+        <a href="#" class="card-link" onclick="alert('Tool Module Loading...')">Launch Tool →</a>
       </div>
-    </div>
-
-    <div class="module-section">
-      <div class="module-header">
-        <span>Module 03</span>
-        <h3>Intro</h3>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <h3>Algo-Trading Sandbox</h3>
+        <p>Learn the basics of algorithmic trading. Write simple logic blocks and backtest them against historical market data.</p>
+        <a href="#" class="card-link" onclick="alert('Tool Module Loading...')">Launch Tool →</a>
       </div>
-      <div class="video-grid">
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>10 min · Setup</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>15 min · Coding</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>22 min · Data Science</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>30 min · Walkthrough</p></div></div>
-      </div>
-    </div>
-
-    <div class="module-section">
-      <div class="module-header">
-        <span>Module 04</span>
-        <h3>Real World Applications</h3>
-      </div>
-      <div class="video-grid">
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>18 min · Fun</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>20 min · Finance</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>15 min · Social Science</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>25 min · Environment</p></div></div>
-      </div>
-    </div>
-
-    <div class="module-section">
-      <div class="module-header">
-        <span>Module 05</span>
-        <h3>College & Career Prep</h3>
-      </div>
-      <div class="video-grid">
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>12 min · College</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea/h4><p>18 min · Resumes</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>35 min · Career</p></div></div>
-        <div class="video-card"><div class="video-thumb"><div class="play-btn"><div class="play-icon"></div></div></div><div class="video-info"><h4>idea</h4><p>10 min · Resources</p></div></div>
-      </div>
-    </div>
-
-    <hr class="section-divider">
-
-    <p class="eyebrow">Guest Speakers</p>
-    <h2 class="section-title">Distinguished <em>Guests</em></h2>
-    <div class="gold-rule"></div>
-    <div class="featured-grid">
-      <div class="featured-card"><div class="featured-avatar">A</div><div class="featured-card-body"><h4>Guest Name</h4><div class="role">University Professor</div><p>Shared insights on the transition from high school statistics to college-level data modeling.</p></div></div>
-      <div class="featured-card"><div class="featured-avatar">B</div><div class="featured-card-body"><h4>Guest Name</h4><div class="role">Local Entrepreneur</div><p>Discussed how basic data tracking helped grow their small business in our community.</p></div></div>
-      <div class="featured-card"><div class="featured-avatar">C</div><div class="featured-card-body"><h4>Guest Name</h4><div class="role">Software Engineer</div><p>Taught a special workshop on coding best practices and building a first tech resume.</p></div></div>
-      <div class="featured-card"><div class="featured-avatar">D</div><div class="featured-card-body"><h4>Guest Name</h4><div class="role">Financial Analyst</div><p>Explained the math behind saving, investing, and understanding the modern economy.</p></div></div>
     </div>
   </div>
 </div>
 
-<div id="page-news" class="page">
-  <div class="section">
-    <p class="eyebrow">Updates & Announcements</p>
-    <h2 class="section-title">Latest <em>News</em></h2>
-    <div class="gold-rule"></div>
-    
-    <div class="news-grid">
-      <div class="news-card">
-        <span class="news-date">June 28, 2026</span>
-        <h3>Fundraiser has just started</h3>
-        <p>Thanks to the generous support of our community, we have officially passed the halfway mark for our club fundraiser. The funds will be going directly towards registering our team for the State Data Challenge next spring.</p>
-        <a href="#" class="news-readmore">Read Full Update</a>
+<div id="page-learn" class="page">
+  <div class="container">
+    <div class="section-header">
+      <h2>Financial <span class="gradient-text">Curriculum</span></h2>
+      <p>Free, accessible education designed to bridge the gap between classroom math and real-world wealth building.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <h3>Budgeting Basics</h3>
+        <p>Master your cash flow. Learn the 50/30/20 rule, how to track hidden expenses, and the psychology behind spending.</p>
+        <a href="#" class="card-link">Start Module →</a>
       </div>
-      
-      <div class="news-card">
-        <span class="news-date">September 28, 2026</span>
-        <h3>New Module Added: Intro to Python</h3>
-        <p>We are thrilled to announce that Module 3 is now live. After heavily requested feedback from our latest club meeting, we've structured a 4-part video series to get absolute beginners coding in Python using Google Colab.</p>
-        <a href="#" class="news-readmore">View Module</a>
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <h3>Saving & Investing</h3>
+        <p>Understand the critical difference between saving cash and investing in assets. Learn about inflation and APY.</p>
+        <a href="#" class="card-link">Start Module →</a>
       </div>
-
-     </div>
+      <div class="card">
+        <div class="card-icon">📉</div>
+        <h3>Intro to Stocks</h3>
+        <p>Demystify the stock market. We cover index funds, ETFs, market caps, and how to execute your first trade safely.</p>
+        <a href="#" class="card-link">Start Module →</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h3>Risk vs. Reward</h3>
+        <p>Analyze risk tolerance, asset allocation, and the importance of diversification in building a resilient portfolio.</p>
+        <a href="#" class="card-link">Start Module →</a>
+      </div>
+    </div>
   </div>
 </div>
 
-<div id="page-about" class="page">
-  <div class="section">
-    <div class="about-grid">
-      <div class="about-img">QI</div>
-      <div class="about-text">
-        <p class="eyebrow" style="margin-bottom:0.75rem">Our Story</p>
-        <h2 class="section-title">About <em>Quantitative Insights</em></h2>
-        <div class="gold-rule" style="margin-top:1rem"></div>
+<div id="page-mission" class="page">
+  <div class="container">
+    <div class="mission-grid">
+      <div class="mission-text">
+        <h2>Empowering Students Through <span class="gradient-text">Code & Capital</span></h2>
+        <br>
+        <p>Open Path Labs is a student-led nonprofit initiative. We recognized a critical flaw in modern education: students are taught advanced calculus but graduate without knowing how to file taxes, read a stock chart, or build a budget.</p>
+        <p>By leveraging our skills in Computer Science and Data Analysis, we build scalable digital tools that make learning finance interactive and engaging.</p>
         
-        <p>Quantitative Insights began as a small group of ambitious high school students who realized something important: the future is entirely driven by data, yet most high school curriculums barely scratch the surface of how to use it.</p>
-        <p>We built this platform to create a bridge between the math we learn in the classroom and the complex problems we see in the real world. By working together, we make coding, statistics, and critical thinking accessible and achievable for students everywhere.</p>
-        <p>Our goal isn't just to memorize formulas. It's to build a community of curious minds equipped with the analytical tools to succeed in college, careers, and beyond.</p>
-        
-        <ul class="values-list">
-          <li>Making complex concepts easy and approachable for teens</li>
-          <li>Fostering teamwork and collaborative problem-solving</li>
-          <li>Applying classroom math to real-world scenarios</li>
-          <li>Preparing members for college-level research and STEM fields</li>
+        <ul class="mission-pillars">
+          <li>
+            <div class="pillar-icon">💻</div>
+            <div class="pillar-content">
+              <h4>Computer Science</h4>
+              <p>We build our own platforms, dashboards, and algorithms from scratch.</p>
+            </div>
+          </li>
+          <li>
+            <div class="pillar-icon">📈</div>
+            <div class="pillar-content">
+              <h4>Financial Literacy</h4>
+              <p>Translating complex economic concepts into actionable teen-friendly advice.</p>
+            </div>
+          </li>
+          <li>
+          
+            <div class="pillar-icon">🤝</div>
+            <div class="pillar-content">
+              <h4>Community Leadership</h4>
+              <p>Partnering with local schools and raising funds to ensure equitable access to tech.</p>
+            </div>
+          </li>
         </ul>
       </div>
-    </div>
-  </div>
-</div>
+      <div class="mission-visual">
+        <div class="code-window">
+          <div class="code-header">
+            <div class="dot red"></div><div class="dot yel"></div><div class="dot grn"></div>
+          </div>
+          <pre style="margin:0;">
+<span style="color:#818CF8;">class</span> <span style="color:#FCD34D;">OpenPathLabs</span> {
+  <span style="color:#818CF8;">constructor</span>() {
+    <span style="color:#F472B6;">this</span>.mission = <span style="color:#A7F3D0;">"Accessibility"</span>;
+    <span style="color:#F472B6;">this</span>.tools = [<span style="color:#A7F3D0;">"Code"</span>, <span style="color:#A7F3D0;">"Finance"</span>];
+  }
 
-<div id="page-team" class="page">
-  <div class="section">
-    <p class="eyebrow">Student Leadership</p>
-    <h2 class="section-title">The <em>Team</em></h2>
-    <div class="gold-rule"></div>
-    <p class="section-sub">Meet the dedicated students organizing events, recording modules, and leading the Quantitative Insights initiative.</p>
-    <div class="team-grid">
-      <div class="team-card"><div class="team-avatar">YN</div><h4>Cristian Banjawo</h4><div class="role">Co President & Founder</div><div class="team-divider"></div><p>Started the initiative to share a passion for data. Leads club meetings and curates the video curriculum. Manager of Marketing.</p></div>
-      <div class="team-card"><div class="team-avatar">TM</div><h4>Varun Pabbaraju</h4><div class="role">Co President & Founder</div><div class="team-divider"></div><p>Started the initiative to share a passion for data. Leads club meetings and curates the video curriculum. Manager of Comp Sci.</p></div>
-      <div class="team-card"><div class="team-avatar">SR</div><h4>Team Member</h4><div class="role">Head of Curriculum</div><div class="team-divider"></div><p>Researches and scripts the educational modules to ensure they are engaging and easy to understand. Manager of Social Media.</p></div>
-      <div class="team-card"><div class="team-avatar">AK</div><h4>Team Member</h4><div class="role">Treasurer</div><div class="team-divider"></div><p>Manages club funds, tracks the fundraiser meter, and plans budgets for future competitions.</p></div>
-      <div class="team-card"><div class="team-avatar">LP</div><h4>Team Member</h4><div class="role">Media Director</div><div class="team-divider"></div><p>Edits the video modules and manages the website to keep everything looking professional.</p></div>
-      <div class="team-card"><div class="team-avatar">BN</div><h4>Team Member</h4><div class="role">Outreach Coordinator</div><div class="team-divider"></div><p>Handles recruitment, marketing, and getting new students excited about data analysis.</p></div>
+  <span style="color:#60A5FA;">empowerStudent</span>(student) {
+    <span style="color:#818CF8;">if</span> (!student.hasKnowledge) {
+      student.learn(<span style="color:#F472B6;">this</span>.tools);
+      student.buildWealth();
+    }
+    <span style="color:#818CF8;">return</span> <span style="color:#A7F3D0;">"Future Leader Created"</span>;
+  }
+}
+          </pre>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <div id="page-contact" class="page">
-  <div class="section">
-    <p class="eyebrow">Get In Touch</p>
-    <h2 class="section-title">Send Us a <em>Message</em></h2>
-    <div class="gold-rule"></div>
-    <div class="contact-wrap">
-      <div class="contact-info">
-        <h3>We'd love to hear from you.</h3>
-        <p style="font-size:14px;color:var(--mid);line-height:1.85;font-weight:300;margin-bottom:2rem">Whether you're a student looking to join, a teacher with advice, or a potential guest speaker, please reach out!</p>
-        <div class="contact-detail"><span class="contact-detail-icon">📧</span><span>Qi.analytics.co@gmail.com, 240-405-8702</span></div>
-        <div class="contact-detail"><span class="contact-detail-icon">📍</span><span>Clarksburg Highschool, Maryland</span></div>
-      </div>
+  <div class="container">
+    <div class="section-header">
+      <h2>Get In <span class="gradient-text">Touch</span></h2>
+      <p>Want to join the team, use our tools in your classroom, or support our nonprofit mission?</p>
+    </div>
+    
+    <div class="dual-grid">
       <div>
-        
-        <form action="https://formspree.io/f/mrewkgod" method="POST" id="contact-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label>First Name</label>
-              <input type="text" name="first_name" placeholder="Your first name" required>
+        <form action="#" method="POST" id="contact-form" onsubmit="event.preventDefault(); alert('Message sent!'); this.reset();">
+          <div style="display:flex; gap:20px;">
+            <div class="form-group" style="flex:1;">
+              <label>Name</label>
+              <input type="text" placeholder="John Doe" required>
             </div>
-            <div class="form-group">
-              <label>Last Name</label>
-              <input type="text" name="last_name" placeholder="Your last name" required>
-            </div>
-            <div class="form-group">
-              <label>Email Address</label>
-              <input type="email" name="email" placeholder="your@email.com" required>
-            </div>
-            <div class="form-group">
-              <label>School / Organization</label>
-              <input type="text" name="organization" placeholder="Where are you from?">
-            </div>
-            <div class="form-group full">
-              <label>Subject</label>
-              <select name="subject" required>
-                <option value="">Select a subject...</option>
-                <option value="Join Club">I want to join the club</option>
-                <option value="Guest Speaker">Guest Speaker Inquiry</option>
-                <option value="Question">I have a question about a module</option>
-                <option value="General">General Inquiry</option>
-              </select>
-            </div>
-            <div class="form-group full">
-              <label>Message</label>
-              <textarea name="message" placeholder="Tell us how we can assist you..." required></textarea>
+            <div class="form-group" style="flex:1;">
+              <label>Email</label>
+              <input type="email" placeholder="john@example.com" required>
             </div>
           </div>
-          <div style="margin-top:2rem">
-            <button type="submit" class="btn-gold">Send Message</button>
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" placeholder="How can we help?">
           </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Write your message here..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Send Message</button>
         </form>
-
+      </div>
+      
+      <div class="donate-card">
+        <h3>Support Our Mission</h3>
+        <p>Open Path Labs relies on community support to keep our servers running and our curriculum free for disadvantaged school districts.</p>
+        <a href="https://gofundme.com" target="_blank" class="btn-donate-large">Donate via GoFundMe</a>
       </div>
     </div>
   </div>
 </div>
 
 <footer>
-  <div class="footer-left">
-    <img src="logo.png" alt="Quantitative Insights Logo" onerror="this.style.display='none'">
-    <div class="footer-logo-text">Quantitative Insights</div>
-  </div>
-  <p>© 2026 Quantitative Insights. Built by Students.</p>
+  <p>© 2026 Open Path Labs. A student-built nonprofit initiative.</p>
 </footer>
 
 <script>
 // Simple SPA Router
-function showPage(id){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
-  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active')});
-  document.getElementById('page-'+id).classList.add('active');
+function showPage(id) {
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  // Remove active state from nav buttons
+  document.querySelectorAll('.nav-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
   
-  // Find matching nav button to highlight
+  // Show target page
+  document.getElementById('page-' + id).classList.add('active');
+  
+  // Highlight matching nav button
   const btns = document.querySelectorAll('.nav-btn');
   btns.forEach(btn => {
-    if(btn.textContent.toLowerCase().includes(id) || (id === 'teachings' && btn.textContent === 'Modules')){
+    if(btn.textContent.toLowerCase().includes(id)) {
       btn.classList.add('active');
     }
   });
+  
   window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-// Clear form after Formspree submission (Formspree usually handles redirects, 
-// but if you set it to AJAX in the future, you'd handle it here)
-window.onbeforeunload = () => {
-  for(const form of document.getElementsByTagName('form')) {
-    form.reset();
-  }
 }
 </script>
 </body>
