@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Path Labs | Financial Engineering & Literacy Platforms</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* CORE ARCHITECTURE */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      /* Adjusted to a lighter, richer gradient blue for the base */
+      --bg-base: #0f1c35; 
+      --bg-surface: rgba(18, 30, 61, 0.6);
+      --bg-surface-hover: rgba(25, 45, 90, 0.8);
+      --text-primary: #f9fafb;
+      --text-secondary: #a6b2c8;
+      --brand-cyan: #00f2fe;
+      --brand-blue: #4facfe;
+      --brand-gradient: linear-gradient(135deg, var(--brand-cyan) 0%, var(--brand-blue) 100%);
+      --border-subtle: rgba(79, 172, 254, 0.2);
+      --glass-bg: rgba(15, 28, 53, 0.7);
+    }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      /* Lighter gradient blue background applied here */
+      background: linear-gradient(135deg, #0d1e3d 0%, #1a3668 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+      overflow-x: hidden;
+    }
+
+    /* UTILITIES & TYPOGRAPHY */
+    h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.02em; }
+    .text-gradient {
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* STICKY INTERACTIVE NAVIGATION */
+    nav {
+      position: sticky; top: 0; z-index: 1000;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 6%; height: 76px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 19px; font-weight: 700; color: var(--text-primary);
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+    }
+    .nav-logo svg { width: 22px; height: 22px; fill: none; stroke: url(#logoGrad); stroke-width: 2.5; }
+    .nav-links { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .nav-link {
+      background: none; border: none; color: var(--text-secondary); cursor: pointer;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 500;
+      padding: 8px 16px; border-radius: 6px; transition: all 0.2s ease;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--text-primary); background: rgba(255, 255, 255, 0.1); }
+    
+    /* BUTTON ENGINE */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; font-weight: 600;
+      padding: 12px 24px; border-radius: 8px; transition: all 0.2s ease; text-decoration: none; cursor: pointer;
+    }
+    .btn-primary { background: var(--brand-gradient); color: #fff; border: none; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(79, 172, 254, 0.35); }
+    .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid rgba(255,255,255,0.15); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+    .btn-nav-cta { background: var(--brand-gradient); color: #fff; border: none; padding: 8px 16px; font-size: 13px; margin-left: 12px; border-radius: 6px; }
+    .btn-nav-cta:hover { opacity: 0.95; }
+
+    /* ROUTING ENGINE */
+    .page { display: none; animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1); min-height: 85vh; }
+    .page.active { display: block; }
+    @keyframes slideUpFade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 80px 6%; }
+    .header-block { text-align: center; margin-bottom: 64px; }
+    .header-block h2 { font-size: 38px; margin-bottom: 16px; letter-spacing: -0.03em; }
+    .header-block p { color: var(--text-secondary); max-width: 580px; margin: 0 auto; font-size: 16px; font-weight: 400; }
+
+    /* STARTUP HERO ARCHITECTURE */
+    .hero {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 140px 6% 100px; position: relative;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 500px; background: radial-gradient(circle, rgba(79,172,254,0.15) 0%, rgba(3,7,18,0) 75%);
+      z-index: -1; pointer-events: none;
+    }
+    .hero h1 { font-size: 58px; line-height: 1.15; margin-bottom: 24px; letter-spacing: -0.04em; }
+    .hero p { font-size: 19px; color: var(--text-secondary); max-width: 680px; margin-bottom: 40px; font-weight: 400; }
+    .hero-ctas { display: flex; gap: 16px; justify-content: center; }
+
+    /* FLEXIBLE STARTUP CARD GRID */
+    .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .feature-card {
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: 12px; padding: 36px 32px; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex; flex-direction: column; text-decoration: none; color: inherit;
+    }
+    .feature-card:hover { transform: translateY(-4px); background: var(--bg-surface-hover); border-color: var(--brand-cyan); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .card-badge { background: rgba(79, 172, 254, 0.15); color: var(--brand-cyan); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 4px; }
+    .card-icon-wrap { font-size: 24px; color: var(--brand-cyan); }
+    .feature-card h3 { font-size: 21px; margin-bottom: 12px; font-weight: 600; }
+    .feature-card p { color: var(--text-secondary); font-size: 14.5px; line-height: 1.6; margin-bottom: 24px; flex-grow: 1; }
+    .card-action-text { color: var(--brand-cyan); font-weight: 600; font-size: 13.5px; display: flex; align-items: center; gap: 6px; margin-top: auto; }
+
+    /* MODULES & VIDEO UI */
+    .module-section { margin-bottom: 70px; background: rgba(0,0,0,0.1); padding: 40px; border-radius: 16px; border: 1px solid var(--border-subtle); }
+    .module-header { font-size: 26px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 16px; margin-bottom: 30px; color: #fff; }
+    .video-card { padding: 20px; }
+    .video-thumbnail {
+      aspect-ratio: 16/9; background: #030811; border-radius: 8px; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center; font-size: 32px;
+      border: 1px solid rgba(255,255,255,0.05); transition: all 0.2s ease; cursor: pointer;
+    }
+    .video-thumbnail:hover { border-color: var(--brand-cyan); box-shadow: 0 0 20px rgba(0,242,254,0.2); }
+    .video-card h4 { font-size: 16px; margin-bottom: 8px; color: #fff; }
+    .video-card p { font-size: 13.5px; color: var(--text-secondary); margin: 0; line-height: 1.5; }
+
+    /* TEAM GRID UI */
+    .team-avatar {
+      width: 90px; height: 90px; border-radius: 50%; background: var(--brand-gradient);
+      margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 36px; box-shadow: 0 8px 20px rgba(0,242,254,0.3);
+    }
+    .team-card { text-align: center; }
+    .team-card h3 { font-size: 20px; margin-bottom: 4px; }
+    .team-role { font-size: 13px; color: var(--brand-cyan); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; display: block; }
+
+    /* MISSION INTERACTION LAYOUT */
+    .split-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: center; }
+    .split-content h2 { font-size: 36px; margin-bottom: 20px; }
+    .split-content p { color: var(--text-secondary); font-size: 16px; margin-bottom: 20px; }
+    
+    .stack-list { list-style: none; margin-top: 32px; }
+    .stack-item { display: flex; gap: 16px; margin-bottom: 20px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+    .stack-icon { font-size: 20px; margin-top: 2px; }
+    .stack-body h4 { font-size: 16.5px; margin-bottom: 4px; font-weight: 600; }
+    .stack-body p { color: var(--text-secondary); font-size: 13.5px; margin: 0; line-height: 1.5; }
+    
+    /* TECH / CODE TERMINAL GLASS */
+    .terminal-mock { background: #050a14; border-radius: 12px; padding: 24px; border: 1px solid var(--border-subtle); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+    .terminal-header { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 14px; }
+    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .term-dot-r { background: #ff5f56; } .term-dot-y { background: #ffbd2e; } .term-dot-g { background: #27c93f; }
+    .terminal-mock pre { margin: 0; font-size: 13px; line-height: 1.6; color: #a6accd; white-space: pre-wrap; }
+
+    /* DOUBLE-CARD INTERACTIVE FOOTER LAYOUT */
+    .contact-split { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 32px; }
+    .form-row { display: flex; gap: 16px; margin-bottom: 16px; }
+    .field-wrap { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .field-wrap label { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.05em; }
+    .field-wrap input, .field-wrap textarea {
+      width: 100%; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px; color: #fff; font-family: inherit; font-size: 14.5px; transition: border-color 0.2s;
+    }
+    .field-wrap input:focus, .field-wrap textarea:focus { outline: none; border-color: var(--brand-cyan); }
+    .field-wrap textarea { height: 140px; resize: none; }
+    
+    .pitch-cta-card {
+      background: rgba(18, 30, 61, 0.8);
+      border: 1px solid var(--border-subtle); padding: 40px; border-radius: 12px;
+      display: flex; flex-direction: column; justify-content: center; position: relative;
+    }
+    .pitch-cta-card h3 { font-size: 26px; margin-bottom: 12px; }
+    .pitch-cta-card p { font-size: 14.5px; color: var(--text-secondary); margin-bottom: 28px; line-height: 1.6; }
+
+    /* CLEAN MINIMALIST FOOTER */
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 36px 6%; text-align: center; color: var(--text-secondary); font-size: 13px; }
+  </style>
+</head>
+<body>
+
+<svg style="display:none;">
+  <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#00f2fe" />
+    <stop offset="100%" stop-color="#4facfe" />
+  </linearGradient>
+</svg>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+  <img src="logo.png" alt="Open Path Labs Logo" style="height: 36px; width: auto; border-radius: 8px;">
+  Open Path Labs
+</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">Overview</button>
+    <button class="nav-link" onclick="showPage('tools')">Sandbox Tools</button>
+    <button class="nav-link" onclick="showPage('learn')">Syllabus</button>
+    <button class="nav-link" onclick="showPage('mission')">Our Engine</button>
+    <button class="nav-link" onclick="showPage('team')">Team</button>
+    <button class="nav-link" onclick="showPage('contact')">Connect</button>
+    <button class="btn btn-nav-cta" onclick="window.open('https://gofund.me/7e28e00ee', '_blank')">Fundraiser by Open Path Labs</button>
+  </div>
+</nav>
+
+<div id="page-home" class="page active">
+  <div class="hero">
+    <h1>Engineering Accessible <br><span class="text-gradient">Financial Literacy</span></h1>
+    <p>We build interactive visual tools and data-driven curriculum to simplify financial mathematics, capital allocation, and macroeconomics for emerging students globally.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" onclick="showPage('tools')">Explore Sandbox</button>
+      <button class="btn btn-secondary" onclick="showPage('learn')">Review Syllabus</button>
+    </div>
+  </div>
+  
+  <div class="container" style="padding-top: 0;">
+    <div class="grid-layout">
+      <div class="feature-card" onclick="showPage('tools')">
+        <div class="card-meta">
+          <span class="card-badge">Module Stack</span>
+          <span class="card-icon-wrap">💻</span>
+        </div>
+        <h3>Interactive Toolkit</h3>
+        <p>Custom modeling software built to simulate wealth accumulation patterns, budgeting architecture, and portfolio backtesting profiles without complex configurations.</p>
+        <span class="card-action-text">Launch Sandbox →</span>
+      </div>
+      <div class="feature-card" onclick="showPage('learn')">
+        <div class="card-meta">
+          <span class="card-badge">Open Access</span>
+          <span class="card-icon-wrap">📊</span>
+        </div>
+        <h3>Structured Curriculum</h3>
+        <p>A multi-phase learning layer structured around micro-lessons that explain systemic market mechanics, risk dynamics, and strategic capital management.</p>
+        <span class="card-action-text">Explore Lessons →</span>
+      </div>
+      <div class="feature-card" onclick="showPage('mission')">
+        <div class="card-meta">
+          <span class="card-badge">Social Layer</span>
+          <span class="card-icon-wrap">🌍</span>
+        </div>
+        <h3>Empowerment Layer</h3>
+        <p>As a student-led platform, our organizational focus centers on distributing physical and digital economic training assets to under-resourced learning cohorts.</p>
+        <span class="card-action-text">Read Our Stack →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-tools" class="page">
+  <div class="container">
+    <div class="header-block">
+      <h2>Simulation <span class="text-gradient">Sandboxes</span></h2>
+      <p>A collection of algorithmic applications allowing students to interactively test theories, trace capital pipelines, and execute strategy variants.</p>
+    </div>
+    <div class="grid-layout">
+      <div class="feature-card">
+        <div class="card-meta">
+          <span class="card-badge">JS Logic Engine</span>
+          <span class="card-icon-wrap">📈</span>
+        </div>
+        <h3>Compound Growth Engine</h3>
+        <p>A continuous mathematical simulation parsing capital optimization metrics. Real-time rendering tracks the scale variance of continuous reinvestments over expansive horizons.</p>
+        <span class="card-action-text" onclick="alert('Component mounting initiated — your custom logic script executes here.')">Initialize Engine →</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-meta">
+          <span class="card-badge">DOM Data Rendering</span>
+          <span class="card-icon-wrap">📊</span>
+        </div>
+        <h3>Dynamic Budget Architect</h3>
+        <p>Interactive macro-modeling workspace converting continuous operational expenses into unified visual flows. Designed to clarify structural liquidity thresholds.</p>
+        <span class="card-action-text" onclick="alert('Component mounting initiated — your custom logic script executes here.')">Initialize Architect →</span>
+      </div>
+      <div class="feature-card">
+        <div class="card-meta">
+          <span class="card-badge">Array Processing</span>
+          <span class="card-icon-wrap">🤖</span>
+        </div>
+        <h3>Quantitative Strategy Sandbox</h3>
+        <p>A logical execution engine tracking conditional asset allocation parameters against isolated historical data trends. Designed to introduce code-driven trading structures.</p>
+        <span class="card-action-text" onclick="alert('Component mounting initiated — your custom logic script executes here.')">Initialize Sandbox →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-learn" class="page">
+  <div class="container">
+    <div class="header-block">
+      <h2>Educational <span class="text-gradient">Syllabus Modules</span></h2>
+      <p>Explore our segmented video curriculum. Each module is engineered to deliver concrete foundational principles behind micro and macro-economic structures.</p>
+    </div>
+    
+    <div class="module-section">
+      <h3 class="module-header">Module 01: Liquidity & Cash Optimization</h3>
+      <div class="grid-layout">
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>1.1 Operational Tracking</h4>
+          <p>Deconstruct structural asset allocations and trace where capital fundamentally flows.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>1.2 Expense Management</h4>
+          <p>Analyzing personal balance accounts and building dynamic baseline budgets.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>1.3 Cash Processing</h4>
+          <p>Understanding the mechanics behind basic banking frameworks and liquidity thresholds.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>1.4 Strategic Surpluses</h4>
+          <p>Learning how to convert operational cash flows into functional, investable capital.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-section">
+      <h3 class="module-header">Module 02: Asset Appreciation Frameworks</h3>
+      <div class="grid-layout">
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>2.1 Raw Storage vs Assets</h4>
+          <p>Differentiating stagnant currency storage from generative, appreciating asset performance.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>2.2 The Impact of Inflation</h4>
+          <p>Tracking the explicit impacts of systemic inflation indices against cash and static yields.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>2.3 Compound Mechanics</h4>
+          <p>A visual demonstration of continuous mathematical reinvestment over wide horizons.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>2.4 Asset Classes Overview</h4>
+          <p>A broad structural look at equities, debt instruments, and real-world tangibles.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-section">
+      <h3 class="module-header">Module 03: Market Mechanics & Equities</h3>
+      <div class="grid-layout">
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>3.1 Capital Markets</h4>
+          <p>Unpacking index equity baskets, broad market structures, and standard exchanges.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>3.2 Deep Dive: ETFs</h4>
+          <p>Evaluating Exchange Traded Funds, mutual structures, and passive vs active management.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>3.3 Standard Valuation</h4>
+          <p>Learning foundational pricing procedures and how the market measures asset worth.</p>
+        </div>
+        <div class="feature-card video-card">
+          <div class="video-thumbnail">▶</div>
+          <h4>3.4 Market Volatility</h4>
+          <p>Understanding psychological market cycles, corrections, and long-term recovery metrics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-mission" class="page">
+  <div class="container">
+    <div class="split-layout">
+      <div class="split-content">
+        <h2>Developing Future Tech & <span class="text-gradient">Capital Allocators</span></h2>
+        <p>Open Path Labs runs at the intersection of quantitative software engineering and social enterprise. Modern academic pipelines frequently focus heavily on pure math theory while ignoring the practical mechanics of wealth building, asset preservation, and algorithmic tooling.</p>
+        <p>We engineer free web infrastructure to serve as a structural stepping stone, empowering students to build technical software mastery and critical data architecture concepts concurrently.</p>
+        
+        <ul class="stack-list">
+          <li class="stack-item">
+            <div class="stack-icon">💻</div>
+            <div class="stack-body">
+              <h4>Software Engineering Focus</h4>
+              <p>We advocate for construction-based learning—teaching web logic and algorithmic workflows alongside core structural calculations.</p>
+            </div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-icon">📈</div>
+            <div class="stack-body">
+              <h4>Systemic Economic Literacy</h4>
+              <p>Delivering uncompromised, technically sound financial content configured for rapid structural adaptation.</p>
+            </div>
+          </li>
+          <li class="stack-item">
+            <div class="stack-icon">🤝</div>
+            <div class="stack-body">
+              <h4>Social Equity & Deployment</h4>
+              <p>Deploying targeted grants, learning materials, and modern educational instances straight to under-capitalized school districts.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="split-visual">
+        <div class="terminal-mock">
+          <div class="terminal-header">
+            <div class="term-dot term-dot-r"></div><div class="term-dot term-dot-y"></div><div class="term-dot term-dot-g"></div>
+          </div>
+          <pre class="mono"><span style="color:#ff79c6;">import</span> { SystemicImpact } <span style="color:#ff79c6;">from</span> <span style="color:#f1fa8c;">'openpath-labs'</span>;
+
+<span style="color:#ff79c6;">const</span> initiative = <span style="color:#ff79c6;">new</span> SystemicImpact({
+  mandate: <span style="color:#f1fa8c;">"Equitable Financial Engineering"</span>,
+  stack: [<span style="color:#f1fa8c;">"JavaScript"</span>, <span style="color:#f1fa8c;">"Economic Modeling"</span>]
+});
+
+<span style="color:#6272a4;">// Executing real-world community onboarding pipeline</span>
+initiative.deployResourceToDistricts({
+  scope: <span style="color:#f1fa8c;">"Underfunded Cohorts"</span>,
+  deliverable: <span style="color:#ff79c6;">true</span>
+});</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-team" class="page">
+  <div class="container">
+    <div class="header-block">
+      <h2>The Open Path <span class="text-gradient">Engineers</span></h2>
+      <p>Meet the operational nodes driving our educational and technical initiatives forward.</p>
+    </div>
+    
+    <div class="grid-layout" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+      <div class="feature-card team-card">
+        <div class="team-avatar">👑</div>
+        <h3>Executive Director</h3>
+        <span class="team-role">Leadership & Strategy</span>
+        <p>Oversees strategic deployment, organizational growth, and global learning partnerships.</p>
+      </div>
+      <div class="feature-card team-card">
+        <div class="team-avatar">💻</div>
+        <h3>Head of Engineering</h3>
+        <span class="team-role">Systems Architecture</span>
+        <p>Maintains core simulation environments and dictates the open-source software stack.</p>
+      </div>
+      <div class="feature-card team-card">
+        <div class="team-avatar">📚</div>
+        <h3>Curriculum Lead</h3>
+        <span class="team-role">Academic Operations</span>
+        <p>Designs macroeconomic lesson plans and ensures data accuracy across video modules.</p>
+      </div>
+      <div class="feature-card team-card">
+        <div class="team-avatar">🌍</div>
+        <h3>Outreach Director</h3>
+        <span class="team-role">Community Relations</span>
+        <p>Coordinates deployments directly with under-capitalized school districts and student cohorts.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-contact" class="page">
+  <div class="container">
+    <div class="header-block">
+      <h2>Strategic <span class="text-gradient">Relations</span></h2>
+      <p>Initiate a connection path to coordinate platform licensing, suggest curriculum enhancements, or support our ecosystem initiatives.</p>
+    </div>
+    
+    <div class="contact-split">
+      <div>
+        <form action="https://formspree.io/f/mrewkgod" method="POST" id="contact-form">
+            <div class="form-row">
+           <div class="field-wrap">
+      <label>Full Identity</label>
+      <input type="text" name="name" placeholder="Alex Chen" required>
+    </div>
+    <div class="field-wrap">
+      <label>Communication Routing (Email)</label>
+      <input type="email" name="email" placeholder="alex@institution.org" required>
+    </div>
+  </div>
+  <div class="form-group field-wrap" style="margin-bottom: 16px;">
+    <label>Subject Vector</label>
+    <input type="text" name="subject" placeholder="System Integration / Partnership Proposal">
+  </div>
+  <div class="form-group field-wrap" style="margin-bottom: 24px;">
+    <label>Transmission Payload (Message)</label>
+    <textarea name="message" placeholder="Outline your initiative proposal or structural query here..." required></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Dispatch Message</button>
+</form>
+      </div>
+      
+      <div class="pitch-cta-card">
+        <h3>Ecosystem Venture Support</h3>
+        <p>Open Path Labs functions as an open-access entity. Capital contributions go directly toward managing active node servers and expanding educational coverage variables for underrepresented classrooms.</p>
+        <a href="https://gofund.me/7e28e00ee" target="_blank" class="btn btn-secondary" style="border-color: var(--brand-cyan); color: var(--brand-cyan); white-space: normal; text-align: center;">Fundraiser by Open Path Labs : Help Direct Relief Make a Bigger Impact</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 Open Path Labs. Engineered for scalable socio-economic literacy. Open Source Architecture.</p>
+</footer>
+
+<script>
+// SPA Navigation Core Routing
+function showPage(id) {
+  // Hide current active pages
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  // Deactivate all nav links
+  document.querySelectorAll('.nav-link').forEach(function(b) { b.classList.remove('active'); });
+  
+  // Activate target page instance
+  const targetPage = document.getElementById('page-' + id);
+  if (targetPage) {
+    targetPage.classList.add('active');
+  }
+  
+  // Reflect state in navigation UI
+  const navButtons = document.querySelectorAll('.nav-link');
+  navButtons.forEach(btn => {
+    if(btn.textContent.toLowerCase().includes(id) || 
+       (id === 'home' && btn.textContent.toLowerCase().includes('overview')) ||
+       (id === 'tools' && btn.textContent.toLowerCase().includes('sandbox')) ||
+       (id === 'learn' && btn.textContent.toLowerCase().includes('syllabus')) ||
+       (id === 'mission' && btn.textContent.toLowerCase().includes('engine')) ||
+       (id === 'team' && btn.textContent.toLowerCase().includes('team')) ||
+       (id === 'contact' && btn.textContent.toLowerCase().includes('connect'))) {
+      btn.classList.add('active');
+    }
+  });
+  
+  // Reset viewport to top on page change
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
+
+
+
